@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE LEGENDS | Epic Community</title>
     
-    <link rel="icon" type="image/png" href="LOGO.PNG">
+    <link rel="icon" type="image/png" href="logo.png">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;600;900&display=swap" rel="stylesheet">
@@ -39,11 +39,11 @@
             transform: translate(-50%, -50%);
         }
 
-        /* --- NAV PROFESSIONALE --- */
+        /* --- NAVIGATION --- */
         header {
             position: fixed; width: 100%; padding: 10px 5%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(1, 10, 19, 0.85);
+            background: rgba(1, 10, 19, 0.9);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(200, 155, 60, 0.3);
             z-index: 1000;
@@ -52,16 +52,21 @@
         .brand-container { 
             display: flex; 
             align-items: center; 
-            gap: 15px; 
+            gap: 20px; 
             perspective: 1000px;
             cursor: pointer;
+            text-decoration: none;
         }
 
+        /* LOGO FIX */
         #main-logo {
-            height: 85px; /* Ingrandito come richiesto */
+            display: block !important;
+            height: 80px; /* Grande e chiaro */
             width: auto;
             filter: drop-shadow(0 0 15px rgba(200, 155, 60, 0.6));
             transition: transform 0.1s ease-out;
+            position: relative;
+            z-index: 1001;
         }
 
         #main-text {
@@ -72,9 +77,11 @@
             letter-spacing: 5px;
             font-weight: 900;
             text-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
-            transition: transform 0.15s ease-out; /* Velocità diversa dal logo */
+            transition: transform 0.15s ease-out;
+            pointer-events: none;
         }
 
+        nav { display: flex; align-items: center; }
         nav a {
             margin-left: 35px; color: #a0946e; text-decoration: none;
             text-transform: uppercase; font-size: 0.8rem; font-weight: 700;
@@ -90,7 +97,7 @@
         nav a:hover { color: var(--gold-light); }
         nav a:hover::after { width: 100%; }
 
-        /* --- PAGE SYSTEM --- */
+        /* --- PAGES --- */
         .page {
             display: none; min-height: 100vh; padding: 180px 10% 80px;
             animation: pageEnter 0.6s ease-out forwards;
@@ -98,8 +105,8 @@
         .page.active { display: block; }
 
         @keyframes pageEnter {
-            from { opacity: 0; transform: scale(0.98) translateY(20px); filter: blur(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
         /* --- HERO --- */
@@ -116,6 +123,7 @@
             color: var(--gold); font-family: 'Cinzel'; font-weight: 900;
             border: 1px solid var(--gold); text-transform: uppercase;
             overflow: hidden; transition: var(--transition); z-index: 1;
+            cursor: pointer;
         }
 
         .btn-epic::before {
@@ -126,23 +134,22 @@
         .btn-epic:hover { color: #000; }
         .btn-epic:hover::before { left: 0; }
 
-        /* --- INTERACTIVE CARDS --- */
+        /* --- CARDS --- */
         .grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px; margin-top: 80px; perspective: 1000px;
+            gap: 30px; margin-top: 80px;
         }
 
         .card {
             background: rgba(5, 20, 35, 0.7);
             border: 1px solid rgba(200, 155, 60, 0.2);
             padding: 50px 30px; text-align: center;
-            position: relative; transform-style: preserve-3d;
-            transition: border-color 0.3s;
+            transform-style: preserve-3d;
+            transition: border-color 0.3s, transform 0.1s ease-out;
         }
 
         .card:hover { border-color: var(--gold); }
-        .card i { font-size: 3rem; color: var(--gold); margin-bottom: 25px; transform: translateZ(50px); }
-        .card h3 { font-family: 'Cinzel'; font-size: 1.6rem; margin-bottom: 15px; transform: translateZ(30px); }
+        .card i { font-size: 3rem; color: var(--gold); margin-bottom: 25px; transform: translateZ(30px); }
 
         /* --- SOCIAL --- */
         .social-item {
@@ -159,8 +166,6 @@
             transform: translateX(15px);
         }
 
-        .social-item i { font-size: 1.5rem; color: var(--gold); }
-
         footer {
             padding: 100px; text-align: center; border-top: 1px solid rgba(200, 155, 60, 0.1);
             background: #00050a; opacity: 0.8;
@@ -174,7 +179,7 @@
 
 <header>
     <div class="brand-container" onclick="showPage('home')">
-        <img src="LOGO.PNG" id="main-logo" alt="The Legends">
+        <img src="logo.png" id="main-logo" alt="Logo">
         <div id="main-text">The Legends</div>
     </div>
     <nav>
@@ -201,17 +206,17 @@
         <div class="card tilt">
             <i class="fas fa-crown"></i>
             <h3>Onore</h3>
-            <p>Rispettiamo ogni compagno, dal nabbo al pro. La tossicità non appartiene a queste terre.</p>
+            <p>Rispettiamo ogni compagno. La tossicità non appartiene a queste terre.</p>
         </div>
         <div class="card tilt">
             <i class="fas fa-fire"></i>
             <h3>Passione</h3>
-            <p>Che sia una ranked o un building su Minecraft, lo facciamo con il cuore.</p>
+            <p>Che sia una ranked o Minecraft, lo facciamo con il cuore.</p>
         </div>
         <div class="card tilt">
             <i class="fas fa-gem"></i>
             <h3>Qualità</h3>
-            <p>Eventi organizzati, server stabili e una gestione sempre presente per te.</p>
+            <p>Eventi organizzati e una gestione sempre presente per te.</p>
         </div>
     </div>
 </div>
@@ -245,27 +250,27 @@
         const logo = document.getElementById('main-logo');
         const text = document.getElementById('main-text');
         
-        // Calcolo rotazione
-        const x = (window.innerWidth / 2 - e.clientX) / 15;
-        const y = (window.innerHeight / 2 - e.clientY) / 15;
+        const x = (window.innerWidth / 2 - e.clientX) / 20;
+        const y = (window.innerHeight / 2 - e.clientY) / 20;
 
-        // Movimento Logo (più reattivo)
-        if(logo) logo.style.transform = `rotateY(${-x}deg) rotateX(${y}deg) translateZ(20px)`;
-        
-        // Movimento Testo (più lento e sottile)
-        if(text) text.style.transform = `rotateY(${-x/2}deg) rotateX(${y/2}deg) translateZ(10px)`;
+        // Effetto autonomo: il logo è più "pesante" e profondo del testo
+        if(logo) {
+            logo.style.transform = `perspective(1000px) rotateY(${-x}deg) rotateX(${y}deg) translateZ(30px)`;
+        }
+        if(text) {
+            text.style.transform = `perspective(1000px) rotateY(${-x/2}deg) rotateX(${y/2}deg) translateZ(10px)`;
+        }
     });
 
+    // Tilt cards
     const cards = document.querySelectorAll('.tilt');
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
+            const rotateX = (e.clientY - rect.top - centerY) / 10;
+            const rotateY = (centerX - (e.clientX - rect.left)) / 10;
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
         card.addEventListener('mouseleave', () => {
@@ -273,6 +278,7 @@
         });
     });
 
+    // Background particles
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
     let w, h, particles = [];
@@ -280,11 +286,11 @@
     function init() {
         w = canvas.width = window.innerWidth;
         h = canvas.height = window.innerHeight;
-        particles = Array.from({length: 60}, () => ({
+        particles = Array.from({length: 50}, () => ({
             x: Math.random() * w,
             y: Math.random() * h,
             size: Math.random() * 2,
-            speedY: -Math.random() * 0.5 - 0.2,
+            speedY: -Math.random() * 0.4 - 0.1,
             opacity: Math.random()
         }));
     }
