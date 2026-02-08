@@ -3,314 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE LEGENDS | Chill Community </title>
-    
-    <link rel="icon" type="image/png" href="logo.png">
+    <title>THE LEGENDS | Network</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --gold: #c89b3c;
-            --gold-light: #f0e6d2;
-            --blue-dark: #010a13;
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --neon-cyan: #00f2ff;
+            --neon-pink: #ff00e5;
+            --bg-dark: #010103;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--blue-dark);
-            color: var(--gold-light);
+            font-family: 'Orbitron', sans-serif;
+            background: var(--bg-dark);
+            color: #fff;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(5, 30, 60, 0.6) 0%, transparent 100%),
-                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            background: radial-gradient(circle at 50% 50%, #0a0a20 0%, #010103 100%);
         }
 
-        #bg { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; pointer-events: none; }
 
+        /* --- CURSORE --- */
         #cursor-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(200, 155, 60, 0.08) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%);
+            position: fixed; width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(0,242,255,0.3) 0%, rgba(0,242,255,0) 70%);
+            border-radius: 50%; pointer-events: none; z-index: 10002;
+            transform: translate(-50%, -50%); will-change: transform;
         }
 
-        /* --- NAVIGATION --- */
+        #line-tracer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10001; }
+        .trace-path { fill: none; stroke: var(--neon-cyan); stroke-width: 2; stroke-linecap: round; opacity: 0.6; filter: blur(1px); }
+
+        /* --- HEADER & 3D ORBIT LOGO --- */
         header {
-            position: fixed; width: 100%; padding: 10px 5%;
+            position: fixed; width: 100%; padding: 15px 8%;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(1, 10, 19, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(200, 155, 60, 0.3);
-            z-index: 1000;
+            z-index: 1000; background: rgba(1, 1, 3, 0.8); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .brand-container { 
-            display: flex; 
-            align-items: center; 
-            gap: 20px; 
+        .brand-link { display: flex; align-items: center; text-decoration: none; gap: 15px; }
+
+        .logo-box { 
+            width: 60px; height: 60px; 
             perspective: 1000px;
-            cursor: pointer;
-            text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        /* LOGO FIX */
-        #main-logo {
-            display: block !important;
-            height: 80px; /* Grande e chiaro */
-            width: auto;
-            filter: drop-shadow(0 0 15px rgba(200, 155, 60, 0.6));
-            transition: transform 0.1s ease-out;
-            position: relative;
-            z-index: 1001;
+        /* Il Pianeta */
+        .planet-sphere {
+            position: absolute;
+            width: 28px; height: 28px;
+            background: var(--bg-dark);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px var(--neon-cyan), 0 0 15px rgba(0, 242, 255, 0.3);
+            z-index: 2;
         }
 
-        #main-text {
-            font-family: 'Cinzel', serif; 
-            font-size: 1.8rem;
-            color: var(--gold); 
-            text-transform: uppercase; 
-            letter-spacing: 5px;
-            font-weight: 900;
-            text-shadow: 0 0 15px rgba(200, 155, 60, 0.4);
-            transition: transform 0.15s ease-out;
-            pointer-events: none;
+        /* L'Anello 3D */
+        .ring-container {
+            position: absolute;
+            width: 70px; height: 70px;
+            transform: rotateX(75deg) rotateY(-20deg);
+            transform-style: preserve-3d;
+            animation: orbitRotation 3s linear infinite;
         }
 
-        nav { display: flex; align-items: center; }
-        nav a {
-            margin-left: 35px; color: #a0946e; text-decoration: none;
-            text-transform: uppercase; font-size: 0.8rem; font-weight: 700;
-            letter-spacing: 2px; transition: var(--transition);
-            position: relative;
+        .ring-visual {
+            position: absolute;
+            width: 100%; height: 100%;
+            border: 3px solid var(--neon-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-pink);
+            box-sizing: border-box;
         }
 
-        nav a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0;
-            height: 1px; background: var(--gold); transition: var(--transition);
+        @keyframes orbitRotation {
+            from { transform: rotateX(75deg) rotateY(-20deg) rotateZ(0deg); }
+            to { transform: rotateX(75deg) rotateY(-20deg) rotateZ(360deg); }
         }
 
-        nav a:hover { color: var(--gold-light); }
-        nav a:hover::after { width: 100%; }
+        /* Brand Text */
+        .brand-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 10px var(--neon-cyan); color: #fff; }
+
+        /* Navigation */
+        nav a { margin-left: 20px; color: #fff; text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; opacity: 0.7; }
+        nav a:hover { opacity: 1; color: var(--neon-cyan); }
+
+        .discord-btn {
+            background: transparent; border: 1px solid var(--neon-pink);
+            color: var(--neon-pink); padding: 10px 20px; font-family: 'Orbitron';
+            font-weight: 900; font-size: 0.7rem; text-decoration: none;
+            transition: 0.3s; box-shadow: 0 0 10px rgba(255,0,229,0.2);
+        }
+        .discord-btn:hover { background: var(--neon-pink); color: #000; box-shadow: 0 0 20px var(--neon-pink); }
 
         /* --- PAGES --- */
-        .page {
-            display: none; min-height: 100vh; padding: 180px 10% 80px;
-            animation: pageEnter 0.6s ease-out forwards;
-        }
-        .page.active { display: block; }
+        .page { display: none; padding: 120px 8% 60px; min-height: 100vh; }
+        .page.active { display: block; animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes pageEnter {
-            from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
+        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-size: clamp(2.5rem, 10vw, 6rem); font-weight: 900; letter-spacing: 15px; animation: ledPulse 4s infinite alternate ease-in-out; }
+        @keyframes ledPulse { 0% { text-shadow: 0 0 20px var(--neon-cyan); } 100% { text-shadow: 0 0 30px var(--neon-pink); } }
 
-        /* --- HERO --- */
-        .hero { text-align: center; max-width: 900px; margin: 0 auto; }
-        .hero h1 {
-            font-family: 'Cinzel', serif; font-size: clamp(3rem, 7vw, 5.5rem);
-            line-height: 0.95; margin-bottom: 30px; color: #fff;
-            background: linear-gradient(to bottom, #fff 40%, var(--gold) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .rule-card { background: var(--glass); border: 1px solid rgba(255,255,255,0.05); padding: 25px; transition: 0.3s; }
+        .rule-card:hover { border-color: var(--neon-cyan); background: rgba(0,242,255,0.02); transform: translateY(-5px); }
 
-        .btn-epic {
-            position: relative; padding: 20px 60px; background: transparent;
-            color: var(--gold); font-family: 'Cinzel'; font-weight: 900;
-            border: 1px solid var(--gold); text-transform: uppercase;
-            overflow: hidden; transition: var(--transition); z-index: 1;
-            cursor: pointer;
-        }
-
-        .btn-epic::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%;
-            height: 100%; background: var(--gold); transition: var(--transition); z-index: -1;
-        }
-
-        .btn-epic:hover { color: #000; }
-        .btn-epic:hover::before { left: 0; }
-
-        /* --- CARDS --- */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px; margin-top: 80px;
-        }
-
-        .card {
-            background: rgba(5, 20, 35, 0.7);
-            border: 1px solid rgba(200, 155, 60, 0.2);
-            padding: 50px 30px; text-align: center;
-            transform-style: preserve-3d;
-            transition: border-color 0.3s, transform 0.1s ease-out;
-        }
-
-        .card:hover { border-color: var(--gold); }
-        .card i { font-size: 3rem; color: var(--gold); margin-bottom: 25px; transform: translateZ(30px); }
-
-        /* --- SOCIAL --- */
-        .social-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 25px 40px; border: 1px solid rgba(200, 155, 60, 0.2);
-            margin-bottom: 15px; background: rgba(255,255,255,0.02);
-            text-decoration: none; color: var(--gold-light);
-            transition: var(--transition);
-        }
-
-        .social-item:hover {
-            background: rgba(200, 155, 60, 0.1);
-            border-color: var(--gold);
-            transform: translateX(15px);
-        }
-
-        footer {
-            padding: 100px; text-align: center; border-top: 1px solid rgba(200, 155, 60, 0.1);
-            background: #00050a; opacity: 0.8;
-        }
+        footer { padding: 40px; text-align: center; opacity: 0.3; font-size: 0.6rem; letter-spacing: 4px; }
     </style>
 </head>
 <body>
 
 <div id="cursor-glow"></div>
-<canvas id="bg"></canvas>
+<svg id="line-tracer"><path class="trace-path" d="" /></svg>
+<canvas id="bg-canvas"></canvas>
 
 <header>
-    <div class="brand-container" onclick="showPage('home')">
-        <img src="logo.png" id="main-logo" alt="Logo">
-        <div id="main-text">The Legends</div>
-    </div>
+    <a href="#" class="brand-link" onclick="showPage('home')">
+        <div class="logo-box">
+            <div class="planet-sphere"></div>
+            <div class="ring-container">
+                <div class="ring-visual"></div>
+            </div>
+        </div>
+        <span class="brand-text">THE LEGENDS</span>
+    </a>
     <nav>
-        <a onclick="showPage('home')">Home</a>
-        <a onclick="showPage('visione')">Codice</a>
-        <a onclick="showPage('social')">Legame</a>
-        <a href="https://discord.gg/M5YsRDkBkC" target="_blank" style="border: 1px solid var(--gold); padding: 10px 20px; color: var(--gold);">Entra</a>
+        <a href="#" onclick="showPage('home')">HOME</a>
+        <a href="#" onclick="showPage('community')">COMMUNITY</a>
+        <a href="#" onclick="showPage('network')">SOCIAL</a>
+        <a href="https://discord.gg/M5YsRDkBkC" target="_blank" class="discord-btn" style="margin-left: 30px;">JOIN DISCORD</a>
     </nav>
 </header>
 
 <div id="home" class="page active">
     <div class="hero">
-        <h1>UNISCITI AI<br>MIGLIORI.</h1>
-        <p style="font-size: 1.2rem; color: #8892b0; margin-bottom: 40px; letter-spacing: 1px;">
-            Più che una community, una dinastia di giocatori chill.
-        </p>
-        <button class="btn-epic" onclick="showPage('social')">Inizia il Viaggio</button>
+        <h1>THE LEGENDS</h1>
+        <p style="color: var(--neon-cyan); letter-spacing: 8px; font-size: 0.8rem; margin-top: 10px;">CHILL GAMING HUB</p>
+        <button class="discord-btn" style="margin-top: 40px; padding: 20px 50px; font-size: 1rem;" onclick="showPage('community')">REGOLE SERVER</button>
     </div>
 </div>
 
-<div id="visione" class="page">
-    <h2 style="font-family: 'Cinzel'; font-size: 3rem; text-align: center; margin-bottom: 50px;">I Nostri Valori</h2>
-    <div class="grid">
-        <div class="card tilt">
-            <i class="fas fa-crown"></i>
-            <h3>Onore</h3>
-            <p>Rispettiamo ogni compagno. La tossicità non appartiene a queste terre.</p>
-        </div>
-        <div class="card tilt">
-            <i class="fas fa-fire"></i>
-            <h3>Passione</h3>
-            <p>Che sia una ranked o Minecraft, lo facciamo con il cuore.</p>
-        </div>
-        <div class="card tilt">
-            <i class="fas fa-gem"></i>
-            <h3>Qualità</h3>
-            <p>Eventi organizzati e una gestione sempre presente per te.</p>
-        </div>
+<div id="community" class="page">
+    <h2 style="text-align: center; margin-bottom: 50px; font-size: 2rem; letter-spacing: 10px; color: var(--neon-cyan);">RULES</h2>
+    <div class="rules-grid">
+        <div class="rule-card"><h3>RISPETTO</h3><p>Niente insulti pesanti o odio.</p></div>
+        <div class="rule-card"><h3>FLAME</h3><p>Sì al gaming banter, no al drama reale.</p></div>
+        <div class="rule-card"><h3>NO TOSSICITÀ</h3><p>Cheat e Scam portano al ban immediato.</p></div>
     </div>
 </div>
 
-<div id="social" class="page">
+<div id="network" class="page">
+    <h2 style="text-align: center; margin-bottom: 50px; font-size: 2rem; letter-spacing: 10px; color: var(--neon-cyan);">NETWORK</h2>
     <div style="max-width: 600px; margin: 0 auto;">
-        <h2 style="font-family: 'Cinzel'; font-size: 3rem; text-align: center; margin-bottom: 40px;">Seguici</h2>
-        <a href="https://www.tiktok.com/@thelegends.ds" target="_blank" class="social-item"><span>TIKTOK</span> <i class="fab fa-tiktok"></i></a>
-        <a href="https://www.instagram.com/ds.thelegends/" target="_blank" class="social-item"><span>INSTAGRAM</span> <i class="fab fa-instagram"></i></a>
-        <a href="https://discord.gg/M5YsRDkBkC" target="_blank" class="social-item"><span>DISCORD</span> <i class="fab fa-discord"></i></a>
-        <a href="#" target="_blank" class="social-item"><span>TWITCH</span> <i class="fab fa-twitch"></i></a>
+        <a href="https://discord.gg/M5YsRDkBkC" class="discord-btn" style="display: block; text-align: center; padding: 30px; margin-bottom: 20px;">DISCORD</a>
+        <a href="https://www.tiktok.com/@thelegends.ds" class="discord-btn" style="display: block; text-align: center; padding: 30px;">TIKTOK</a>
     </div>
 </div>
 
-<footer>
-    <p>© 2026 THE LEGENDS. DOMINA IL TUO GIOCO.</p>
-</footer>
+<footer>THE LEGENDS // 2026 // NO TURNING BACK</footer>
 
 <script>
-    function showPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        window.scrollTo({top: 0, behavior: 'smooth'});
+    /* --- LOGICA SFONDO E CURSORE --- */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars = [];
+    function initBg() {
+        w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
+        stars = Array.from({length: 40}, () => ({ x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.2, v: Math.random()*0.1 + 0.05 }));
+    }
+    function drawBg() {
+        ctx.clearRect(0,0,w,h); ctx.fillStyle = "rgba(255,255,255,0.2)";
+        stars.forEach(s => { s.y -= s.v; if(s.y < 0) s.y = h; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill(); });
+        requestAnimationFrame(drawBg);
     }
 
     const glow = document.getElementById('cursor-glow');
+    const path = document.querySelector('.trace-path');
+    let points = [], mX = 0, mY = 0;
+
     document.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
-        
-        const logo = document.getElementById('main-logo');
-        const text = document.getElementById('main-text');
-        
-        const x = (window.innerWidth / 2 - e.clientX) / 20;
-        const y = (window.innerHeight / 2 - e.clientY) / 20;
-
-        // Effetto autonomo: il logo è più "pesante" e profondo del testo
-        if(logo) {
-            logo.style.transform = `perspective(1000px) rotateY(${-x}deg) rotateX(${y}deg) translateZ(30px)`;
-        }
-        if(text) {
-            text.style.transform = `perspective(1000px) rotateY(${-x/2}deg) rotateX(${y/2}deg) translateZ(10px)`;
-        }
+        mX = e.clientX; mY = e.clientY;
+        glow.style.left = mX + 'px'; glow.style.top = mY + 'px';
     });
 
-    // Tilt cards
-    const cards = document.querySelectorAll('.tilt');
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (e.clientY - rect.top - centerY) / 10;
-            const rotateY = (centerX - (e.clientX - rect.left)) / 10;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-        });
-    });
-
-    // Background particles
-    const canvas = document.getElementById('bg');
-    const ctx = canvas.getContext('2d');
-    let w, h, particles = [];
-
-    function init() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-        particles = Array.from({length: 50}, () => ({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            size: Math.random() * 2,
-            speedY: -Math.random() * 0.4 - 0.1,
-            opacity: Math.random()
-        }));
+    function updateLine() {
+        points.unshift({x: mX, y: mY});
+        if (points.length > 10) points.pop();
+        if (points.length > 1) {
+            let d = `M ${points[0].x} ${points[0].y}`;
+            for (let i = 1; i < points.length; i++) { d += ` L ${points[i].x} ${points[i].y}`; }
+            path.setAttribute('d', d);
+        }
+        requestAnimationFrame(updateLine);
     }
 
-    function animate() {
-        ctx.clearRect(0, 0, w, h);
-        particles.forEach(p => {
-            p.y += p.speedY;
-            if (p.y < -10) p.y = h + 10;
-            ctx.fillStyle = `rgba(200, 155, 60, ${p.opacity})`;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fill();
-        });
-        requestAnimationFrame(animate);
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
     }
 
-    window.addEventListener('resize', init);
-    init();
-    animate();
+    window.addEventListener('resize', initBg);
+    initBg(); drawBg(); updateLine();
 </script>
 
 </body>
