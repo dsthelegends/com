@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZENITH | Official Hub</title>
+    <title>ZENITH | Il Server Discord Italiano</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -16,10 +16,19 @@
             --text: #ffffff;
             --accent: #1a1a1a;
             --ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --discord: #5865F2;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; scroll-behavior: smooth; }
         body { background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+        /* Effetto Scanline Professionale */
+        body::before {
+            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 255, 0, 0.02));
+            background-size: 100% 4px, 3px 100%; z-index: 100; pointer-events: none;
+        }
 
         /* Custom Cursor */
         #cursor {
@@ -39,61 +48,62 @@
 
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 5%; position: fixed; width: 100%; z-index: 1000;
-            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--accent);
+            padding: 20px 5%; position: fixed; width: 100%; z-index: 1000;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--accent); transition: 0.4s;
         }
-        .logo { font-family: 'Archivo Black'; font-size: 1.8rem; text-decoration: none; color: #fff; text-transform: uppercase; }
+        .logo { font-family: 'Archivo Black'; font-size: 1.8rem; text-decoration: none; color: #fff; text-transform: uppercase; letter-spacing: -1px; }
         .logo span { color: var(--primary); animation: flicker 3s infinite; }
 
         @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
-            20%, 24%, 55% { opacity: 0; }
+            0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; text-shadow: 0 0 10px var(--primary); }
+            20%, 24%, 55% { opacity: 0.3; text-shadow: none; }
         }
 
-        nav a { text-decoration: none; color: #666; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; margin-left: 30px; transition: 0.3s; letter-spacing: 1px; }
+        nav a { text-decoration: none; color: #777; font-weight: 900; font-size: 0.7rem; text-transform: uppercase; margin-left: 30px; transition: 0.3s; letter-spacing: 2px; }
         nav a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
         section { padding: 150px 10%; border-bottom: 1px solid var(--accent); position: relative; }
-        .reveal { opacity: 0; transform: translateY(50px); transition: 1.2s var(--ease); }
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.5s var(--ease); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .section-title { font-family: 'Archivo Black'; font-size: clamp(3rem, 8vw, 5rem); text-transform: uppercase; line-height: 0.9; margin-bottom: 50px; }
+        .section-title { font-family: 'Archivo Black'; font-size: clamp(3rem, 8vw, 5rem); text-transform: uppercase; line-height: 0.8; margin-bottom: 60px; }
         .section-title span { -webkit-text-stroke: 1px var(--primary); color: transparent; }
 
-        /* Cards & Interaction */
         .glass-card {
             background: var(--card-bg); border: 1px solid var(--accent); padding: 50px;
-            transition: 0.5s var(--ease); position: relative; overflow: hidden;
+            transition: 0.6s var(--ease); position: relative; overflow: hidden;
         }
-        .glass-card:hover { border-color: var(--primary); transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .glass-card::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,170,0,0.05), transparent);
-            transition: 0.5s;
+        .glass-card:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8); }
+
+        .lvl-row { display: flex; align-items: center; padding: 25px; border-bottom: 1px solid var(--accent); transition: 0.4s var(--ease); }
+        .lvl-row:hover { background: rgba(255,170,0,0.05); padding-left: 50px; }
+        .lvl-num { font-family: 'Archivo Black'; font-size: 2.5rem; color: var(--primary); margin-right: 40px; width: 70px; font-style: italic; }
+
+        /* Pulsante Entra con Discord Professionale */
+        .btn-discord {
+            display: inline-flex; align-items: center; gap: 15px;
+            padding: 22px 45px; background: var(--primary); color: #000;
+            text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1.1rem;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%); transition: 0.4s;
+            margin-top: 40px; border: none;
         }
-        .glass-card:hover::after { left: 100%; }
-
-        /* Livelli Table */
-        .lvl-row { display: flex; align-items: center; padding: 25px; border-bottom: 1px solid var(--accent); transition: 0.3s; }
-        .lvl-row:hover { background: rgba(255,170,0,0.03); padding-left: 40px; }
-        .lvl-num { font-family: 'Archivo Black'; font-size: 2rem; color: var(--primary); margin-right: 30px; width: 50px; }
-
-        /* Footer & Legal */
-        .legal-footer { background: #000; padding: 100px 10% 50px; border-top: 2px solid var(--primary); }
-        .legal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 50px; margin-bottom: 80px; }
-        .legal-box h4 { font-family: 'Archivo Black'; font-size: 0.8rem; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; }
-        .legal-box p, .legal-box a { color: #555; font-size: 0.8rem; text-decoration: none; transition: 0.3s; }
-        .legal-box a:hover { color: #fff; }
-
-        .copyright-bar { padding-top: 40px; border-top: 1px solid #111; display: flex; justify-content: space-between; align-items: center; color: #333; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; }
-
-        .btn-main {
-            display: inline-block; padding: 25px 60px; background: var(--primary); color: #000;
-            text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 1rem;
-            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%); transition: 0.3s;
+        .btn-discord i { font-size: 1.4rem; }
+        .btn-discord:hover { 
+            transform: scale(1.05) rotate(-1deg); 
+            background: #fff; 
+            box-shadow: 0 0 30px rgba(255, 170, 0, 0.4);
         }
-        .btn-main:hover { transform: scale(1.1) rotate(-2deg); background: #fff; }
+
+        .btn-apply {
+            display: inline-block; padding: 18px 35px; border: 1px solid var(--primary); color: var(--primary);
+            text-decoration: none; font-weight: 900; text-transform: uppercase; font-size: 0.8rem;
+            margin-top: 30px; transition: 0.4s; letter-spacing: 2px;
+        }
+        .btn-apply:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+
+        footer { background: #000; padding: 100px 10% 50px; border-top: 4px solid var(--primary); }
+        .copyright-bar { padding-top: 40px; border-top: 1px solid #111; display: flex; justify-content: space-between; align-items: center; color: #444; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; }
 
         @media (max-width: 768px) { nav, #cursor, #cursor-dot { display: none; } * { cursor: auto; } }
     </style>
@@ -104,111 +114,130 @@
 <div id="cursor-dot"></div>
 <div id="bg-glow"></div>
 
-<header>
+<header id="navbar">
     <a href="#" class="logo">ZE<span>NITH</span></a>
     <nav>
-        <a href="#about">Philosophy</a>
-        <a href="#mod">Elite</a>
-        <a href="#levels">Ranks</a>
-        <a href="#rules">Protocol</a>
+        <a href="#about">Filosofia</a>
+        <a href="#levels">Gradi</a>
+        <a href="#applications">Candidature</a>
+        <a href="#rules">Protocollo</a>
     </nav>
 </header>
 
-<section id="hero" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <h1 class="reveal active" style="font-family: 'Archivo Black'; font-size: clamp(4rem, 18vw, 12rem); letter-spacing: -5px;">ZENITH</h1>
-    <p class="reveal active" style="letter-spacing: 10px; color: #444; font-weight: 900; text-transform: uppercase;">The Next Gen Community</p>
-</section>
-
-<section id="about" class="reveal">
-    <h2 class="section-title">REAL <span>CONNECTIONS</span></h2>
-    <div class="glass-card">
-        <p style="font-size: 1.5rem; color: #eee; font-weight: 600;">In un'era di solitudine digitale, Zenith è l'eccezione. Abbiamo costruito uno spazio dove l'anonimato non è isolamento, ma libertà di essere se stessi. Qui non sei un ID, sei un pilastro della community.</p>
+<section id="hero" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+    <h1 class="reveal active" style="font-family: 'Archivo Black'; font-size: clamp(4rem, 18vw, 12rem); letter-spacing: -8px;">ZENITH</h1>
+    <p class="reveal active" style="letter-spacing: 12px; color: #555; font-weight: 900; text-transform: uppercase; font-size: 0.9rem;">L'Evoluzione della Community</p>
+    
+    <div class="reveal active">
+        <a href="https://discord.gg/4Dr4cRVStf" class="btn-discord">
+            <i class="fab fa-discord"></i> ENTRA CON DISCORD
+        </a>
     </div>
 </section>
 
-<section id="mod" class="reveal">
-    <h2 class="section-title">MOD <span>FORCE</span></h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="glass-card">
-            <h3 style="font-family: 'Archivo Black'; color: var(--primary);">ZERO TOXICITY</h3>
-            <p>Algoritmi e Moderatori umani lavorano in sinergia per eliminare il disturbo prima che ti raggiunga.</p>
-        </div>
-        <div class="glass-card">
-            <h3 style="font-family: 'Archivo Black'; color: var(--primary);">SUPPORT 24/7</h3>
-            <p>Il nostro sistema Ticket garantisce risposte rapide e risoluzioni eque per ogni membro.</p>
-        </div>
+<section id="about" class="reveal">
+    <h2 class="section-title">CONNESSIONI <span>REALI</span></h2>
+    <div class="glass-card">
+        <p style="font-size: clamp(1.1rem, 3vw, 1.6rem); color: #fff; font-weight: 400; line-height: 1.8;">
+            In un panorama digitale saturo, <b style="color: var(--primary);">Zenith</b> emerge come lo standard definitivo. Non siamo solo un server, ma un ecosistema progettato per chi cerca qualità, rispetto e interazione d'élite.
+        </p>
     </div>
 </section>
 
 <section id="levels" class="reveal">
-    <h2 class="section-title">THE <span>LADDER</span></h2>
-    <div class="lvl-row"><div class="lvl-num">01</div><div><h3 style="font-family: 'Archivo Black';">MEMBRO</h3><p>Ingresso nell'ecosistema.</p></div></div>
-    <div class="lvl-row"><div class="lvl-num">05</div><div><h3 style="font-family: 'Archivo Black';">COSTANTE</h3><p>Privilegi multimediali attivi.</p></div></div>
-    <div class="lvl-row"><div class="lvl-num">15</div><div><h3 style="font-family: 'Archivo Black';">VETERANO</h3><p>Status di fiducia garantito.</p></div></div>
-    <div class="lvl-row" style="background: var(--primary); color: #000;"><div class="lvl-num" style="color:#000">30</div><div><h3 style="font-family: 'Archivo Black';">LEGENDA</h3><p><b>POTERE ASSOLUTO.</b></p></div></div>
+    <h2 class="section-title">LA <span>SCALATA</span></h2>
+    
+    <div class="lvl-row"><div class="lvl-num">50</div><div><h3 style="font-family: 'Archivo Black';">VIP 👑</h3><p>Status supremo riservato ai pilastri del progetto.</p></div></div>
+    <div class="lvl-row" style="background: var(--primary); color: #000; transform: skewX(-2deg);"><div class="lvl-num" style="color:#000">35</div><div><h3 style="font-family: 'Archivo Black';">LEGGENDA 🏆</h3><p><b>POTERE ASSOLUTO.</b> Il vertice dell'autorità in Zenith.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">25</div><div><h3 style="font-family: 'Archivo Black';">MITO 🏅</h3><p>Eminenza riconosciuta per contributi storici.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">20</div><div><h3 style="font-family: 'Archivo Black';">VETERANO ⭐</h3><p>Membro d'onore con accesso ai canali riservati.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">15</div><div><h3 style="font-family: 'Archivo Black';">SERGENTE 👮</h3><p>Status operativo con funzioni di supporto alla community.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">10</div><div><h3 style="font-family: 'Archivo Black';">COSTANTE 🎉</h3><p>Abilitazione completa a tutte le funzioni multimediali.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">05</div><div><h3 style="font-family: 'Archivo Black';">ATTIVO 🔥</h3><p>Accesso ai primi vantaggi ed eventi esclusivi.</p></div></div>
+    <div class="lvl-row"><div class="lvl-num">01</div><div><h3 style="font-family: 'Archivo Black';">NUOVO ARRIVATO 👋</h3><p>Punto zero. L'inizio del tuo percorso nell'élite.</p></div></div>
+</section>
+
+<section id="applications" class="reveal">
+    <h2 class="section-title">CENTRO <span>OPERATIVO</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+        <div class="glass-card">
+            <h3 style="font-family: 'Archivo Black'; color: var(--primary); font-size: 1.8rem; margin-bottom: 20px;">RECLUTAMENTO STAFF</h3>
+            <p style="color: #aaa;">Cerchiamo menti lucide e responsabili per mantenere l'ordine. Entra nel Mod-Team di Zenith.</p>
+            <a href="#" class="btn-apply">Invia Candidatura</a>
+        </div>
+
+        <div class="glass-card">
+            <h3 style="font-family: 'Archivo Black'; color: var(--primary); font-size: 1.8rem; margin-bottom: 20px;">APPELLI UNBAN</h3>
+            <p style="color: #aaa;">Sottoponi il tuo caso alla nostra commissione per una revisione obiettiva della sanzione.</p>
+            <a href="#" class="btn-apply">Richiedi Revisione</a>
+        </div>
+    </div>
 </section>
 
 <section id="rules" class="reveal">
-    <h2 class="section-title">THE <span>CODE</span></h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-        <div class="glass-card" style="padding: 20px;"><h4>01. ETICA</h4><p>Rispetto totale verso ogni individuo.</p></div>
-        <div class="glass-card" style="padding: 20px;"><h4>02. PRIVACY</h4><p>Nessuna tolleranza per il Doxxing.</p></div>
-        <div class="glass-card" style="padding: 20px;"><h4>03. SAFETY</h4><p>Vietato materiale illegale o NSFW.</p></div>
-        <div class="glass-card" style="padding: 20px;"><h4>04. ORDER</h4><p>Niente Spam o pubblicità esterna.</p></div>
+    <h2 class="section-title">IL <span>PROTOCOLLO</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div class="glass-card" style="padding: 30px; border-left: 4px solid var(--primary);"><h4>01. ETICA</h4><p style="font-size: 0.8rem; margin-top: 10px; color: #888;">Rispetto reciproco senza compromessi.</p></div>
+        <div class="glass-card" style="padding: 30px; border-left: 4px solid var(--primary);"><h4>02. PRIVACY</h4><p style="font-size: 0.8rem; margin-top: 10px; color: #888;">Protezione assoluta dei dati personali.</p></div>
+        <div class="glass-card" style="padding: 30px; border-left: 4px solid var(--primary);"><h4>03. SICUREZZA</h4><p style="font-size: 0.8rem; margin-top: 10px; color: #888;">Zero tolleranza per contenuti illegali.</p></div>
+        <div class="glass-card" style="padding: 30px; border-left: 4px solid var(--primary);"><h4>04. ORDINE</h4><p style="font-size: 0.8rem; margin-top: 10px; color: #888;">Niente Spam o pubblicità esterna.</p></div>
     </div>
-    <div style="text-align: center; margin-top: 80px;">
-        <a href="https://discord.gg/4Dr4cRVStf" class="btn-main">ENTRA NELL'ELITE</a>
+    
+    <div style="text-align: center; margin-top: 100px;">
+        <a href="https://discord.gg/4Dr4cRVStf" class="btn-discord">
+            <i class="fab fa-discord"></i> ENTRA CON DISCORD
+        </a>
     </div>
 </section>
 
-<footer class="legal-footer">
-    <div class="legal-grid">
-        <div class="legal-box">
-            <h4>PROJECT ZENITH</h4>
-            <p>La community fondata per ridefinire gli standard di interazione sociale su Discord.</p>
+<footer>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 60px; margin-bottom: 80px;">
+        <div>
+            <h4 style="font-family: 'Archivo Black'; color: var(--primary); font-size: 0.9rem; margin-bottom: 25px;">ZENITH PROJECT</h4>
+            <p style="color: #666; font-size: 0.85rem;">Ridefiniamo i confini della socializzazione digitale. Creato per chi non si accontenta.</p>
         </div>
-        <div class="legal-box">
-            <h4>LEGAL & PRIVACY</h4>
-            <a href="#">Terms of Service</a><br>
-            <a href="#">Privacy Policy</a><br>
-            <a href="#">Cookie Guidelines</a>
+        <div>
+            <h4 style="font-family: 'Archivo Black'; color: var(--primary); font-size: 0.9rem; margin-bottom: 25px;">NAVIGAZIONE</h4>
+            <a href="#about" style="color: #444; text-decoration: none; display: block; margin-bottom: 10px; font-size: 0.8rem;">Filosofia</a>
+            <a href="#levels" style="color: #444; text-decoration: none; display: block; margin-bottom: 10px; font-size: 0.8rem;">Gradi</a>
+            <a href="#applications" style="color: #444; text-decoration: none; display: block; margin-bottom: 10px; font-size: 0.8rem;">Candidature</a>
         </div>
-        <div class="legal-box">
-            <h4>CONTATTI</h4>
-            <p>Discord: zenith.staff</p>
-            <p>Email: legal@zenithproject.com</p>
+        <div>
+            <h4 style="font-family: 'Archivo Black'; color: var(--primary); font-size: 0.9rem; margin-bottom: 25px;">CONTATTI</h4>
+            <p style="color: #444; font-size: 0.8rem;">Discord: zenith.staff</p>
+            <p style="color: #444; font-size: 0.8rem;">Email: legal@zenithproject.com</p>
         </div>
     </div>
     <div class="copyright-bar">
-        <div>© 2026 ZENITH PROJECT. ALL RIGHTS RESERVED.</div>
+        <div>© 2026 ZENITH PROJECT. TUTTI I DIRITTI RISERVATI.</div>
         <div>DESIGNED & OWNED BY L E G E N D S</div>
     </div>
-    <p style="font-size: 0.6rem; color: #222; margin-top: 20px; text-align: justify;">
-        Tutti i contenuti, marchi, loghi e grafiche presenti su questo sito sono di proprietà esclusiva di L E G E N D S. Ogni riproduzione non autorizzata sarà perseguita a norma di legge. Il presente server non è affiliato a Discord Inc.
-    </p>
 </footer>
 
 <script>
-    // Cursor Movement
     const cursor = document.getElementById('cursor');
     const dot = document.getElementById('cursor-dot');
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        dot.style.left = e.clientX + 'px';
-        dot.style.top = e.clientY + 'px';
-        
-        // Glow effect
+        cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+        dot.style.transform = `translate(${e.clientX - 2}px, ${e.clientY - 2}px)`;
         const x = (e.clientX / window.innerWidth) * 100;
         const y = (e.clientY / window.innerHeight) * 100;
         document.getElementById('bg-glow').style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255, 170, 0, 0.08) 0%, transparent 70%)`;
     });
 
-    // Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            nav.style.background = 'rgba(5, 5, 5, 0.95)';
+        } else {
+            nav.style.background = 'rgba(5, 5, 5, 0.8)';
+        }
+    });
 </script>
 
 </body>
